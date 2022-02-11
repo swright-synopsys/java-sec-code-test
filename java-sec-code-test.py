@@ -1,4 +1,5 @@
 import time
+import argparse
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -28,10 +29,10 @@ def test_google():
     driver.quit()
 
 # Initialize the browser driver
-def driver_init():
+def driver_init(host, port):
     options = FirefoxOptions()
     driver = webdriver.Firefox(options=options)
-    driver.get("http://localhost:8080")
+    driver.get("http://" + host + ":" + port)
     driver.title # => "JavSecCode"
     return(driver)
 
@@ -78,8 +79,15 @@ def java_sec_code_links(driver):
     clicky_clicky(driver, "logout")
 
 
-#test_google()
-driver = driver_init()
-java_sec_code_login(driver)
-java_sec_code_links(driver)
-driver.quit()
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Java-Sec-Code Button Clicker')
+    parser.add_argument('--host', default='localhost')
+    parser.add_argument('--port', default='8080')
+    args = parser.parse_args()
+
+    #test_google()
+    driver = driver_init(args.host, args.port)
+    java_sec_code_login(driver)
+    java_sec_code_links(driver)
+    driver.quit()
