@@ -29,8 +29,7 @@ def test_google():
     driver.quit()
 
 # Initialize the browser driver
-def driver_init(host, port):
-    options = FirefoxOptions()
+def driver_init(host, port, options):
     driver = webdriver.Firefox(options=options)
     driver.get("http://" + host + ":" + port)
     driver.title # => "JavSecCode"
@@ -84,10 +83,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Java-Sec-Code Button Clicker')
     parser.add_argument('--host', default='localhost')
     parser.add_argument('--port', default='8080')
+    parser.add_argument('--headless', action='store_true')
     args = parser.parse_args()
 
+    options = FirefoxOptions()
+    if (args.headless):
+        options.add_argument("--headless")
+
     #test_google()
-    driver = driver_init(args.host, args.port)
+    driver = driver_init(args.host, args.port, options)
     java_sec_code_login(driver)
     java_sec_code_links(driver)
     driver.quit()
