@@ -51,7 +51,10 @@ def java_sec_code_login(driver):
 # sleep a bit just for show (can probably take it out)
 # hit the back button
 def clicky_clicky(driver, link):
-    appinfo = driver.find_element(by=By.LINK_TEXT, value=link)
+    try: appinfo = driver.find_element(by=By.LINK_TEXT, value=link)
+    except:
+        print("WARNING: couldn't find link: " + link)
+        return
     appinfo.click()
     time.sleep(1)
     driver.execute_script("window.history.go(-1)")
